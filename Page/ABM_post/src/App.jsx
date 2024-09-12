@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import Form from './components/form';
 
 async function getPost() {
   const res = await fetch('http://127.0.0.1:8000/post');
@@ -23,21 +24,7 @@ function App() {
   return (
     <>
       <h1>Postear</h1>
-      <form action="">
-        <div className="form-floating mb-3">
-          <input type="text" className="form-control" id="title" placeholder="Titulo"/>
-          <label htmlFor="title">Titulo</label>
-        </div>
-        <div className="form-floating mb-3">
-          <input type="text" className="form-control" id="category" placeholder="Categoria"/>
-          <label htmlFor="category">Categoria</label>
-        </div>
-        <div className="form-floating mb-3">
-          <textarea className="form-control" id="descpription" placeholder="Comentario" style={{'height': '100px'}}></textarea>
-          <label htmlFor="descpription">Comentario</label>
-        </div>
-        <button type="button" className="btn btn-secondary btn-lg mb-3">Enviar</button>
-      </form>
+      <Form />
       <h2>POSTS</h2>
       {post && post.map(element => {
         return (
