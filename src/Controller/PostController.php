@@ -26,10 +26,12 @@ class PostController extends AbstractController
     #[Route('/post/add', methods: ['POST'])]
     public function addPost(Request $request): JsonResponse
     {
-
+        $res = json_decode($request->getContent(), true);
+       
         return $this->json([
             'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PostController.php',
+            'path' => 'src/Controller/addController.php',
+            'data' => $res,
         ]);
     }
 

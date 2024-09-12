@@ -1,6 +1,6 @@
 export default function Form(){
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(event)
 
@@ -9,7 +9,11 @@ export default function Form(){
       'category': event.target.category.value,
       'description': event.target.description.value
     }
-    console.log(form)
+    
+    const res = await addPost(form);
+    if(res){
+      console.log(res)
+    }
   }
   return(
     <form action="" onSubmit={handleSubmit}>
@@ -27,4 +31,18 @@ export default function Form(){
     </div>
     <button type="submit" className="btn btn-secondary btn-lg mb-3">Enviar</button>
   </form>)
+}
+
+async function addPost(form) {
+  console.log(form)
+  
+  const res = await fetch('http://127.0.0.1:8000/post/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  });
+  const json = await res.json();
+  return json;
 }
