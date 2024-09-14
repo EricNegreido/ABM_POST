@@ -25,13 +25,23 @@ class PostRepository extends ServiceEntityRepository
 
         $sql = "SELECT * FROM post";
         $resultSet = $entityManager->executeQuery($sql);
-
-        // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
-        // $query = $entityManager->createQuery( $sql );
-
-        // return $query->getResult();
        }
+
+       public function addingPost($data): void
+       {
+        $entityManager = $this->getEntityManager();
+        
+        $product = new Post();
+        $product->setTitle($data->title);
+        $product->setCategory($data->category);
+        $product->setDescription($data->description);
+
+        $entityManager->persist($product);
+
+        $entityManager->flush();
+    }
+
 
     //    public function findOneBySomeField($value): ?Post
     //    {

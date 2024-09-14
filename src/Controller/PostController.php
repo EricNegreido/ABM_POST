@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\PostRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PostController extends AbstractController
 {
@@ -24,15 +27,24 @@ class PostController extends AbstractController
     }
 
     #[Route('/post/add', methods: ['POST'])]
-    public function addPost(Request $request): JsonResponse
+    public function addPost(Request $request, PostRepository $postRepository): JsonResponse
     {
-        $res = json_decode($request->getContent(), true);
-       
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/addController.php',
-            'data' => $res,
-        ]);
+            try{
+                $data = json_decode($request->getContent());
+                var_dump($data);
+    
+                $postRepository->addingPost($data);
+    
+                return $this->json([
+                    'status' => true,
+                    'message' => 'Se ingreso un nuevo post',
+                    'data' => $data
+                ]);
+            }catch(\Exception $th){
+                throw $th;
+            }
+            
+        
     }
 
     #[Route('/post/update', methods: ['PUT'])]
