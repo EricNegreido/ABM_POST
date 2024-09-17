@@ -8,6 +8,12 @@ async function getPost() {
   return json;
 }
 
+async function deletePost(id){
+  const res = await fetch(`http://127.0.0.1:8000/post/del/${id}`, {method: 'delete'});
+  const json = await res.json();
+  return json.ok;
+}
+
 
 
 function App() {
@@ -19,7 +25,15 @@ function App() {
     };
     fetchPost();
   }, [])
-  console.log(post)
+
+  const handleClickDel = async (id) => {
+    const status = await deletePost(id);
+    if(status){
+      const postData = await getPost();
+      setPost(postData.post);
+    }
+
+  }
 
   return (
     <>
@@ -38,6 +52,7 @@ function App() {
                 <footer className="blockquote-footer"> {element.date} </footer>
               </blockquote>
             </div>
+            <button onClick={() => handleClickDel(element.id)}> Eliminar </button>
           </div>
         )
       })}

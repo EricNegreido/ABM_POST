@@ -48,7 +48,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/post/update', methods: ['PUT'])]
-    public function updatePost(Request $request): JsonResponse
+    public function updatePost(Request $request, PostRepository $postRepository): JsonResponse
     {
         
         return $this->json([
@@ -57,13 +57,20 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/post/del', methods: ['DELETE'])]
-    public function deletedPost(Request $request): JsonResponse
+    #[Route('/post/del/{id}', methods: ['DELETE'])]
+    public function deletedPost(Request $request,  PostRepository $postRepository, int $id): JsonResponse
     {
         
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PostController.php',
-        ]);
+        try{
+
+            $postRepository->delPost($id);
+
+            return $this->json([
+                'status' => true,
+                'message' => 'Se elimino un post',
+            ]);
+        }catch(\Exception $th){
+            throw $th;
+        }
     }
 }
